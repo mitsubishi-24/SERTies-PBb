@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarGen Login</title>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Optional: Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+
+<style>
+/* Essential custom styles */
+body {
+    background-color: #82CAFF;
+    font-family: 'Lexend', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.Login_box {
+    position: relative;
+    background-color: #ffffff;
+    border: 2px solid #0066bd;
+    border-radius: 15px;
+    padding: 3.5em 2.5em 3em 2.5em;
+    box-shadow: 0px 0px 10px 2px rgba(0,0,0,0.2);
+    max-width: 450px;
+    width: 100%;
+    padding-left: 40px;   /* Added left padding */
+    padding-right: 40px;  /* Added right padding */
+}
+
+.Login_header {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0066bd;
+    width: 160px;
+    height: 70px;
+    border-radius: 0 0 20px 20px;
+    color: #ffffff;
+    font-family: 'Fjalla One', sans-serif;
+    font-size: 2em;
+}
+
+.input_box {
+    position: relative;
+    margin-top: 20px;
+}
+
+.input_box1 {
+    position: relative;
+    margin-top: 50px;
+}
+
+.Forgot {
+    cursor: pointer;
+    text-decoration: none;
+    color: #1484CD;
+}
+
+.Forgot:hover{
+    color: #0045a0;
+}
+
+.input-field {
+    width: 100%;
+    height: 55px;
+    border: 2px solid #0066bd;
+    border-radius: 30px;
+    outline: none;
+    font-size: 16px;
+    padding: 0 20px;
+}
+
+.label {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.2s;
+    color: rgba(0,0,0,0.65);
+}
+
+.input-field:focus ~ .label,
+.input-field:valid ~ .label {
+    top: -10px;
+    left: 20px;
+    font-size: 14px;
+    background-color: #0066bd;
+    border-radius: 30px;
+    color: #ffffff;
+    padding: 3px 10px;
+}
+
+.input-submit {
+    width: 100%;
+    height: 50px;
+    background: #1484CD;
+    border: none;
+    border-radius: 30px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 20px 0 ;
+}
+
+.input-submit:hover {
+    background: #0066bd;
+}
+
+.toast-message {
+    position: fixed;
+    Top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 20px;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+.toast-show {
+    opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="Login_box">
+    <div class="Login_header text-center">Log In</div>
+
+    <div class="input_box1">
+        <input type="text" class="input-field form-control" id="username" required>
+        <label class="label">Username</label>
+    </div>
+
+    <div class="input_box">
+        <input type="password" class="input-field form-control" id="password" required>
+        <label class="label">Password</label>
+    </div>
+
+    <button class="input-submit btn btn-primary" onclick="login()">Login</button>
+
+    <a class="Forgot" onclick="Forgot()">Forgot Password?</a>
+</div>
+
+<script>
+const users = [
+    { username: "teacher1", password: "pass123", role: "teacher" },
+    { username: "teacher2", password: "pass123", role: "teacher" },
+    { username: "adviser1", password: "pass456", role: "adviser" },
+    { username: "tc1", password: "pass1", role: "bebeko"}
+];
+
+let bebekoAttempts = 0;
+
+function login() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    const user = users.find(u => u.username === username && u.password === password);
+
+    if(user) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        localStorage.removeItem("bebekoAttempts");
+
+        if(user.role === "teacher") window.location.href = "dashboard_teacher.html";
+        else if(user.role === "adviser") window.location.href = "dashboard_adviser.html";
+        else if(user.role === "bebeko") {
+            
+            const messages = ["Kiss muna 😘", "Kulit 😂", "Kiss mo muna akoo", "Dalii ><"];
+            showToast(messages[bebekoAttempts % messages.length]);
+            bebekoAttempts++;
+        }
+    }else if(username === "" && password === ""){
+        showToast("Enter Username and Password")
+    }else if(username === ""){
+        showToast("Enter Username")
+    }else if(password === ""){
+        showToast("Enter Password")
+    }else {
+        showToast("Invalid username or password!");
+    }
+}
+
+function Forgot() {
+    showToast("Kindly message sir Chris")
+}
+
+// Auto-redirect if already logged in
+window.onload = () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if(currentUser) {
+        if(currentUser.role === "teacher") window.location.href = "dashboard_teacher.html";
+        if(currentUser.role === "adviser") window.location.href = "dashboard_adviser.html";
+    }
+}
+
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+
+// When Enter is pressed in username, focus password
+usernameInput.addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        e.preventDefault();  // prevent form submit
+        passwordInput.focus();
+    }
+});
+
+passwordInput.addEventListener("keydown", function(e) {
+    if(e.key === "Enter") {
+        login();  // call login function
+        passwordInput.blur();
+    }
+});
+
+</script>
+
+
+<script src="Actions Disabled.js"></script>
+<script src="Toast.js"></script>
+
+</body>
+</html>
