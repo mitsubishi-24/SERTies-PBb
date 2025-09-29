@@ -67,7 +67,7 @@ function login() {
             showToast(messages[bebekoAttempts % messages.length]);
             bebekoAttempts++;
         }else{
-            showToast1("From the SHS Coordinator: SERT again apologizes for the delay, we appreciate your understanding.")
+            showToast1("From SHS Coordinator: SERT again apologizes for the delay, we appreciate your understanding.")
             document.getElementById("username").value = "";
             this.blur();
             setTimeout(() => {
@@ -113,4 +113,5 @@ usernameInput.addEventListener("keydown", function(e) {
 <script>AOS.init();</script>
 
 </body>
+
 </html>
