@@ -1,5 +1,5 @@
 
-const targetDate = new Date("October 2, 2025 00:00:00").getTime();
+const targetDate = new Date("October 5, 2025 00:00:00").getTime();
 
 const countdownElement = document.getElementById("countdown");
 
@@ -8,7 +8,7 @@ function updateCountdown() {
     const distance = targetDate - now;
 
     if (distance <= 0) {
-    countdownElement.innerHTML = "Time's up!";
+    countdownElement.innerHTML = "Countdown is over!";
     clearInterval(timer);
     return;
     }
@@ -23,4 +23,5 @@ function updateCountdown() {
 }
 
     const timer = setInterval(updateCountdown, 1000);
+
     updateCountdown();
