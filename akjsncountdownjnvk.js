@@ -1,5 +1,5 @@
 
-const targetDate = new Date("October 5, 2025 00:00:00").getTime();
+const targetDate = new Date("October 10, 2025 00:00:00").getTime();
 
 const countdownElement = document.getElementById("countdown");
 
@@ -25,3 +25,4 @@ function updateCountdown() {
     const timer = setInterval(updateCountdown, 1000);
 
     updateCountdown();
+
